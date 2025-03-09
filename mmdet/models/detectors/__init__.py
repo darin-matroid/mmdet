@@ -42,6 +42,8 @@ from .queryinst import QueryInst
 from .reppoints_detector import RepPointsDetector
 from .retinanet import RetinaNet
 from .rpn import RPN
+from .rtdetr import RTDETR
+from .rtdetrv2 import RTDETRV2
 from .rtmdet import RTMDet
 from .scnet import SCNet
 from .semi_base import SemiBaseDetector
@@ -71,5 +73,5 @@ __all__ = [
     'MaskFormer', 'DDOD', 'Mask2Former', 'SemiBaseDetector', 'SoftTeacher',
     'RTMDet', 'Detectron2Wrapper', 'CrowdDet', 'CondInst', 'BoxInst',
     'DetectionTransformer', 'ConditionalDETR', 'DINO', 'DABDETR', 'GLIP',
-    'DDQDETR', 'GroundingDINO'
+    'DDQDETR', 'GroundingDINO', 'RTDETR', 'RTDETRV2'
 ]
