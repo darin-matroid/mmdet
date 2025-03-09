@@ -50,7 +50,7 @@ def discrete_grid_sample_grad(
     sampling_value = nn.functional.grid_sample(
         input,
         (sampling_coord + 0.5) / scale - 1,
-        mode='nearest',
+        mode='bilinear',
         padding_mode='zeros',
         align_corners=False)
     return sampling_value
@@ -100,7 +100,7 @@ def discrete_sampling_multi_scale_deformable_attn_pytorch(
         sampling_grid_l_ = sampling_grids[:, :, :,
                                           level].transpose(1, 2).flatten(0, 1)
         # bs*num_heads, embed_dims, num_queries, num_points
-        sampling_value_l_ = discrete_grid_sample(
+        sampling_value_l_ = discrete_grid_sample_grad(
             value_l_,
             sampling_grid_l_,
             mode='nearest',
