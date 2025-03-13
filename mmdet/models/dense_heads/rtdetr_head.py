@@ -181,10 +181,11 @@ class RTDETRHead(DINOHead):
             pos_bbox_pred = bbox_preds.reshape(-1, 4)[pos_inds]
             pos_decode_bbox_pred = bbox_cxcywh_to_xyxy(pos_bbox_pred)
             pos_labels = labels[pos_inds]
+            # With AMP this sometimes seems to be the wrong type; explicitly cast.
             cls_iou_targets[pos_inds, pos_labels] = bbox_overlaps(
                 pos_decode_bbox_pred.detach(),
                 pos_decode_bbox_targets,
-                is_aligned=True)
+                is_aligned=True).to(cls_iou_targets.dtype)
             loss_cls = self.loss_cls(
                 cls_scores, cls_iou_targets, avg_factor=cls_avg_factor)
         else:
