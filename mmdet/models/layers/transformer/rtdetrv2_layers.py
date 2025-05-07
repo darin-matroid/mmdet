@@ -50,6 +50,8 @@ def discrete_grid_sample_grad(
     sampling_value = nn.functional.grid_sample(
         input,
         (sampling_coord + 0.5) / scale - 1,
+        # Matroid: Since this is the version of sampling that should have a gradient,
+        # this needs to be 'bilinear'. mmdet impl had 'nearest' here, which has no gradient.
         mode='bilinear',
         padding_mode='zeros',
         align_corners=False)
@@ -100,6 +102,9 @@ def discrete_sampling_multi_scale_deformable_attn_pytorch(
         sampling_grid_l_ = sampling_grids[:, :, :,
                                           level].transpose(1, 2).flatten(0, 1)
         # bs*num_heads, embed_dims, num_queries, num_points
+        # Matroid: Per original implementation/paper, we need to get the bilinear
+        # gradient here during training, or it won't learn how to generate sample points for
+        # deformable attention. Unclear why the mmdet impl wasn't doing that.
         sampling_value_l_ = discrete_grid_sample_grad(
             value_l_,
             sampling_grid_l_,
